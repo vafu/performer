@@ -415,10 +415,11 @@ void NoteSequenceEditPage::encoder(EncoderEvent &event) {
                 break;
             case Layer::StageRepeats:
                 step.setStageRepeats(step.stageRepeats() + event.value());
-                        case Layer::StageRepeatsMode:                 
+                break;
+            case Layer::StageRepeatsMode:                 
                 step.setStageRepeatsMode(
                     static_cast<NoteSequence::StageRepeatMode>(
-                        event.value() > 0 
+                        step.stageRepeatMode() + event.value()
                     )
                 );
                 break;
@@ -460,13 +461,13 @@ void NoteSequenceEditPage::switchLayer(int functionKey, bool shift) {
     if (shift) {
         switch (Function(functionKey)) {
         case Function::Gate:
-            setLayer(Layer::GateProbability);
+            setLayer(Layer::StageRepeatsMode);
             break;
         case Function::Retrigger:
-            setLayer(Layer::Retrigger);
+            setLayer(Layer::StageRepeats);
             break;
         case Function::Length:
-            setLayer(Layer::Length);
+            setLayer(Layer::StageRepeatsMode);
             break;
         case Function::Note:
             setLayer(Layer::Note);
@@ -494,13 +495,10 @@ void NoteSequenceEditPage::switchLayer(int functionKey, bool shift) {
             setLayer(Layer::StageRepeatsMode);
             break;
         case Layer::StageRepeatsMode:
-<<<<<<< HEAD
-=======
             setLayer(Layer::Gate);
             break;
-        default:
->>>>>>> vafu/metro-pr
-            setLayer(Layer::Gate);
+        case Layer::Gate:
+            setLayer(Layer::GateProbability);
             break;
         default:
             setLayer(Layer::GateOffset);
@@ -727,8 +725,6 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         canvas.setFont(Font::Small);
         canvas.drawTextCentered(64 + 32, 16, 64, 32, str);
         break;
-<<<<<<< HEAD
-=======
      case Layer::StageRepeatsMode:
         str.reset();
         switch (step.stageRepeatMode()) {
@@ -738,12 +734,16 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
             case NoteSequence::First:
                 str("FIRST");
                 break;
+            case NoteSequence::Odd:
+                str("ODD");
+                break;
+            case NoteSequence::Triplets:
+                str("TRIPLET");
+                break;
         }
         canvas.setFont(Font::Small);
         canvas.drawTextCentered(64 + 32, 16, 64, 32, str);
         break;
-    
->>>>>>> vafu/metro-pr
     case Layer::Last:
         break;
     }

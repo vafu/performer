@@ -166,13 +166,11 @@ TrackEngine::TickResult NoteTrackEngine::tick(uint32_t tick) {
                 const auto &step = sequence.step(_sequenceState.step());
                 bool isLastStageStep = ((int) step.stageRepeats() - (int) _currentStageRepeat) <= 0;
             
-                if ((step.stageRepeatMode() == NoteSequence::Each || _currentStageRepeat == 1) 
-                        && step.gateOffset() >= 0) {
+                if (step.gateOffset() >= 0) {
                     triggerStep(tick, divisor);
                 }
 
-                if (step.stageRepeatMode() != NoteSequence::First && !isLastStageStep
-                        && step.gateOffset() < 0) {
+                if (!isLastStageStep && step.gateOffset() < 0) {
                     triggerStep(tick + divisor, divisor, false);
                 }
 
@@ -359,6 +357,18 @@ void NoteTrackEngine::triggerStep(uint32_t tick, uint32_t divisor, bool forNext)
     bool stepGate = evalStepGate(step, _noteTrack.gateProbabilityBias()) || useFillGates;
     if (stepGate) {
         stepGate = evalStepCondition(step, iteration, useFillCondition, _prevCondition);
+    }
+    switch (step.stageRepeatMode()) {
+        case NoteSequence::StageRepeatMode::Each:
+            break;
+        case NoteSequence::StageRepeatMode::First:
+            stepGate = stepGate && _currentStageRepeat == 1;
+            break;
+        case NoteSequence::StageRepeatMode::Odd:
+            stepGate = stepGate && _currentStageRepeat % 2 != 0;
+            break;
+        case NoteSequence::StageRepeatMode::Triplets:
+            stepGate = stepGate && (_currentStageRepeat - 1) % 3 == 0;
     }
 
     if (stepGate) {
