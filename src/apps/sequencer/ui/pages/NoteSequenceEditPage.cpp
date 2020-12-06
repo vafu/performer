@@ -415,12 +415,13 @@ void NoteSequenceEditPage::encoder(EncoderEvent &event) {
                 break;
             case Layer::StageRepeats:
                 step.setStageRepeats(step.stageRepeats() + event.value());
-            case Layer::StageRepeatsMode:
+                        case Layer::StageRepeatsMode:                 
                 step.setStageRepeatsMode(
                     static_cast<NoteSequence::StageRepeatMode>(
-                        static_cast<int>(step.stageRepeatMode()) - event.value()
+                        event.value() > 0 
                     )
                 );
+                break;
             case Layer::Last:
                 break;
             }
@@ -493,6 +494,12 @@ void NoteSequenceEditPage::switchLayer(int functionKey, bool shift) {
             setLayer(Layer::StageRepeatsMode);
             break;
         case Layer::StageRepeatsMode:
+<<<<<<< HEAD
+=======
+            setLayer(Layer::Gate);
+            break;
+        default:
+>>>>>>> vafu/metro-pr
             setLayer(Layer::Gate);
             break;
         default:
@@ -720,6 +727,23 @@ void NoteSequenceEditPage::drawDetail(Canvas &canvas, const NoteSequence::Step &
         canvas.setFont(Font::Small);
         canvas.drawTextCentered(64 + 32, 16, 64, 32, str);
         break;
+<<<<<<< HEAD
+=======
+     case Layer::StageRepeatsMode:
+        str.reset();
+        switch (step.stageRepeatMode()) {
+            case NoteSequence::Each:
+                str("EACH");
+                break;
+            case NoteSequence::First:
+                str("FIRST");
+                break;
+        }
+        canvas.setFont(Font::Small);
+        canvas.drawTextCentered(64 + 32, 16, 64, 32, str);
+        break;
+    
+>>>>>>> vafu/metro-pr
     case Layer::Last:
         break;
     }

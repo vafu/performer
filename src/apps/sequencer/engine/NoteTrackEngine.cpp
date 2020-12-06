@@ -180,7 +180,7 @@ TrackEngine::TickResult NoteTrackEngine::tick(uint32_t tick) {
                         && sequence.step(_sequenceState.nextStep()).gateOffset() < 0) {
                     triggerStep(tick + divisor, divisor, true);
                 }
-                
+               
                 if (isLastStageStep) {
                    _currentStageRepeat = 1; 
                 } else {
