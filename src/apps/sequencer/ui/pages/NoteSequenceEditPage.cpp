@@ -138,6 +138,11 @@ void NoteSequenceEditPage::draw(Canvas &canvas) {
         case Layer::Gate:
             break;
         case Layer::GateProbability:
+            SequencePainter::drawProbability(
+                canvas,
+                x + 2, y + 18, stepWidth - 4, 2,
+                step.gateProbability() + 1, NoteSequence::GateProbability::Range
+            );
             break;
         case Layer::GateOffset:
             SequencePainter::drawOffset(
