@@ -13,7 +13,9 @@ Types::LayerRange NoteSequence::layerRange(Layer layer) {
         return { 0, 1 };
     case Layer::Slide:
         return { 0, 1 };
-    CASE(GateOffset)
+    case Layer::GateOffset:
+        // TODO: allow negative gate delay in the future
+        return { 0, GateOffset::Max };
     CASE(GateProbability)
     CASE(Retrigger)
     CASE(RetriggerProbability)
@@ -24,6 +26,8 @@ Types::LayerRange NoteSequence::layerRange(Layer layer) {
     CASE(NoteVariationRange)
     CASE(NoteVariationProbability)
     CASE(Condition)
+    CASE(StageRepeats)
+    CASE(StageRepeatsMode)
     case Layer::Last:
         break;
     }
@@ -64,6 +68,10 @@ int NoteSequence::layerDefaultValue(Layer layer)
         return step.noteVariationProbability();
     case Layer::Condition:
         return int(step.condition());
+    case Layer::StageRepeats:
+        return step.stageRepeats();
+    case Layer::StageRepeatsMode:
+        return step.stageRepeatMode();
     case Layer::Last:
         break;
     }
@@ -99,6 +107,10 @@ int NoteSequence::Step::layerValue(Layer layer) const {
         return noteVariationProbability();
     case Layer::Condition:
         return int(condition());
+    case Layer::StageRepeats:
+        return stageRepeats();
+    case Layer::StageRepeatsMode:
+        return stageRepeatMode();
     case Layer::Last:
         break;
     }
@@ -147,6 +159,12 @@ void NoteSequence::Step::setLayerValue(Layer layer, int value) {
     case Layer::Condition:
         setCondition(Types::Condition(value));
         break;
+    case Layer::StageRepeats:
+        setStageRepeats(value);
+        break;
+    case Layer::StageRepeatsMode:
+        setStageRepeatsMode(static_cast<NoteSequence::StageRepeatMode>(value));
+        break;
     case Layer::Last:
         break;
     }
@@ -168,6 +186,8 @@ void NoteSequence::Step::clear() {
     setNoteVariationRange(0);
     setNoteVariationProbability(NoteVariationProbability::Max);
     setCondition(Types::Condition::Off);
+    setStageRepeats(1);
+    setStageRepeatsMode(StageRepeatMode::Each);
 }
 
 void NoteSequence::Step::write(VersionedSerializedWriter &writer) const {
