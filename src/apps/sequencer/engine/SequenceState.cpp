@@ -118,7 +118,8 @@ void SequenceState::calculateNextStepAligned(int absoluteStep, Types::RunMode ru
 
     switch (runMode) {
     case Types::RunMode::Forward:
-         _nextStep = firstStep + absoluteStep % stepCount;
+        _nextIteration = absoluteStep / stepCount;
+        _nextStep = firstStep + absoluteStep % stepCount;
         break;
     case Types::RunMode::Backward:
         _nextStep = lastStep - absoluteStep % stepCount;

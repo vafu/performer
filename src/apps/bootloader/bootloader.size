@@ -1,0 +1,25 @@
+bootloader  :
+section             size        addr
+.text              21368   134217728
+.preinit_array         0   134239096
+.init_array            0   134239096
+.fini_array            0   134239096
+.ARM.extab           156   134239096
+.ARM.exidx           536   134239252
+.data               1496   536870912
+.bss               17520   536872408
+.debug_info        98228           0
+.debug_abbrev      17780           0
+.debug_loc         32088           0
+.debug_aranges      3168           0
+.debug_ranges       4240           0
+.debug_line        32055           0
+.debug_str         84781           0
+.comment             254           0
+.ARM.attributes       57           0
+.debug_frame        7416           0
+.debug_macro       17735           0
+.stabstr             118           0
+Total             338996
+
+
